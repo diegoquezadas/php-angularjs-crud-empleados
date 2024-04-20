@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../../model/Empleado.php';
+require_once __DIR__ . '/../model/Empleado.php';
 
 class EmpleadoController {
     private $empleadoModel;
@@ -10,60 +10,73 @@ class EmpleadoController {
 
     public function index() {
         $empleados = $this->empleadoModel->getAllEmpleados();
-        require_once __DIR__ . '/../view/empleado/index.php';
+        header('Content-Type: application/json');
+        echo json_encode($empleados);
     }
 
     public function show($id) {
         $empleado = $this->empleadoModel->getEmpleadoById($id);
-        require_once 'path/to/view/empleados/show.php';
+        header('Content-Type: application/json');
+        echo json_encode($empleado);
     }
 
-    public function create() {
-        require_once 'path/to/view/empleados/create.php';
-    }
-
-    public function store($request) {
-        $this->empleadoModel->createEmpleado(
-            $request['nombre'], 
-            $request['apellido'], 
-            $request['cedula'], 
-            $request['id_provincia'], 
-            $request['fecha_nacimiento'], 
-            $request['email'], 
-            $request['observaciones'], 
-            $request['ruta_fotografia'], 
-            $request['fecha_ingreso'], 
-            $request['cargo'], 
-            $request['salario']
+    public function store() {
+        $data = json_decode(file_get_contents("php://input"), true);
+        $result = $this->empleadoModel->createEmpleado(
+            $data['nombre'],
+            $data['apellido'],
+            $data['cedula'],
+            $data['id_provincia'],
+            $data['fecha_nacimiento'],
+            $data['email'],
+            $data['observaciones'],
+            $data['ruta_fotografia'],
+            $data['fecha_ingreso'],
+            $data['cargo'],
+            $data['salario']
         );
-        header('Location: /empleados');
+        header('Content-Type: application/json');
+        if ($result) {
+            echo json_encode(['message' => 'Empleado creado exitosamente']);
+        } else {
+            http_response_code(500);
+            echo json_encode(['message' => 'Error al crear el empleado']);
+        }
     }
-
-    public function edit($id) {
-        $empleado = $this->empleadoModel->getEmpleadoById($id);
-        require_once 'path/to/view/empleados/edit.php';
-    }
-
-    public function update($id, $request) {
-        $this->empleadoModel->updateEmpleado(
+    
+    public function update($id) {
+        $data = json_decode(file_get_contents("php://input"), true);
+        $result = $this->empleadoModel->updateEmpleado(
             $id,
-            $request['nombre'], 
-            $request['apellido'], 
-            $request['cedula'], 
-            $request['id_provincia'], 
-            $request['fecha_nacimiento'], 
-            $request['email'], 
-            $request['observaciones'], 
-            $request['ruta_fotografia'], 
-            $request['fecha_ingreso'], 
-            $request['cargo'], 
-            $request['salario']
+            $data['nombre'],
+            $data['apellido'],
+            $data['cedula'],
+            $data['id_provincia'],
+            $data['fecha_nacimiento'],
+            $data['email'],
+            $data['observaciones'],
+            $data['ruta_fotografia'],
+            $data['fecha_ingreso'],
+            $data['cargo'],
+            $data['salario']
         );
-        header('Location: /empleados');
+        header('Content-Type: application/json');
+        if ($result) {
+            echo json_encode(['message' => 'Empleado actualizado exitosamente']);
+        } else {
+            http_response_code(500);
+            echo json_encode(['message' => 'Error al actualizar el empleado']);
+        }
     }
-
+    
     public function destroy($id) {
-        $this->empleadoModel->deleteEmpleado($id);
-        header('Location: /empleados');
+        $result = $this->empleadoModel->deleteEmpleado($id);
+        header('Content-Type: application/json');
+        if ($result) {
+            echo json_encode(['message' => 'Empleado eliminado exitosamente']);
+        } else {
+            http_response_code(500);
+            echo json_encode(['message' => 'Error al eliminar el empleado']);
+        }
     }
 }
