@@ -1,4 +1,4 @@
-tabla Provincia*****************
+**********tabla Provincia*****************
 CREATE TABLE Provincia (
     id_provincia INT AUTO_INCREMENT PRIMARY KEY,
     nombre_provincia VARCHAR(255) NOT NULL,
@@ -59,7 +59,7 @@ INSERT INTO Provincia (nombre_provincia, capital_provincia, descripcion_provinci
 INSERT INTO Provincia (nombre_provincia, capital_provincia, descripcion_provincia, poblacion_provincia, superficie_provincia, latitud_provincia, longitud_provincia, id_region) VALUES ('Zamora Chinchipe', 'Zamora', 'Zamora Chinchipe es una provincia de Ecuador ubicada en el suroriente de la Amazonía ecuatoriana, que limita con la provincia de Morona Santiago al norte; con la provincia de Loja al oeste; y con Perú al sur y este. Según el último ordenamiento territorial del Ecuador, Zamora Chinchipe pertenece a la Región Sur comprendida también por las provincias de Loja y El Oro. Tiene una superficie de 10.556 km², la cual comprende una orografía montañosa única que la distingue del resto de provincias amazónicas.', '91376.00', '10556.00', '-2.883333', '-79', '4');
 
 
-tabla empleado**********
+**********tabla empleado**********
 
 CREATE TABLE Empleado (
     id_empleado INT AUTO_INCREMENT PRIMARY KEY,
@@ -74,5 +74,10 @@ CREATE TABLE Empleado (
     fecha_ingreso DATE,
     cargo VARCHAR(255),
     salario DECIMAL(10, 2),
-    FOREIGN KEY (id_provincia) REFERENCES Provincia(id_provincia)
+    observaciones_ficha VARCHAR(255),
+    id_provincia_cargo INT,
+    jornada_parcial BOOLEAN,
+    FOREIGN KEY (id_provincia) REFERENCES Provincia(id_provincia),
+    FOREIGN KEY (id_provincia_cargo) REFERENCES Provincia(id_provincia)
+
 );

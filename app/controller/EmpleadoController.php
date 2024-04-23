@@ -1,26 +1,31 @@
 <?php
 require_once __DIR__ . '/../model/Empleado.php';
 
-class EmpleadoController {
+class EmpleadoController
+{
     private $empleadoModel;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->empleadoModel = new Empleado(Database::getInstance()->getConnection());
     }
 
-    public function index() {
+    public function index()
+    {
         $empleados = $this->empleadoModel->getAllEmpleados();
         header('Content-Type: application/json');
         echo json_encode($empleados);
     }
 
-    public function show($id) {
+    public function show($id)
+    {
         $empleado = $this->empleadoModel->getEmpleadoById($id);
         header('Content-Type: application/json');
         echo json_encode($empleado);
     }
 
-    public function store() {
+    public function store()
+    {
         $data = json_decode(file_get_contents("php://input"), true);
         $result = $this->empleadoModel->createEmpleado(
             $data['nombre'],
@@ -33,7 +38,10 @@ class EmpleadoController {
             $data['ruta_fotografia'],
             $data['fecha_ingreso'],
             $data['cargo'],
-            $data['salario']
+            $data['salario'],
+            $data['observaciones_ficha'],
+            $data['id_provincia_cargo'],
+            $data['jornada_parcial']
         );
         header('Content-Type: application/json');
         if ($result) {
@@ -43,8 +51,10 @@ class EmpleadoController {
             echo json_encode(['message' => 'Error al crear el empleado']);
         }
     }
-    
-    public function update($id) {
+
+
+    public function update($id)
+    {
         $data = json_decode(file_get_contents("php://input"), true);
         $result = $this->empleadoModel->updateEmpleado(
             $id,
@@ -58,7 +68,10 @@ class EmpleadoController {
             $data['ruta_fotografia'],
             $data['fecha_ingreso'],
             $data['cargo'],
-            $data['salario']
+            $data['salario'],
+            $data['observaciones_ficha'],
+            $data['id_provincia_cargo'],
+            $data['jornada_parcial']
         );
         header('Content-Type: application/json');
         if ($result) {
@@ -68,8 +81,10 @@ class EmpleadoController {
             echo json_encode(['message' => 'Error al actualizar el empleado']);
         }
     }
-    
-    public function destroy($id) {
+
+
+    public function destroy($id)
+    {
         $result = $this->empleadoModel->deleteEmpleado($id);
         header('Content-Type: application/json');
         if ($result) {

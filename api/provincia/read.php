@@ -1,6 +1,9 @@
 <?php
 require_once '../../app/init.php';
 
+$provinciaModel = new Provincia(Database::getInstance()->getConnection());
+echo json_encode($provinciaModel->getAllProvincias());
+
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     if (isset($_GET['id'])) {
         $provincia = $provinciaModel->getProvinciaById($_GET['id']);

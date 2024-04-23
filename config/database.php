@@ -5,7 +5,7 @@ $password = '';
 $database = 'empleados_db';
 
 function getPDO() {
-    global $host, $database, $username, $password; // Declara las variables como globales
+    global $host, $database, $username, $password; 
 
     static $pdo = null;
     if ($pdo === null) {

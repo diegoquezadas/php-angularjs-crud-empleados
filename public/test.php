@@ -1,8 +1,7 @@
 <?php
-// Asegúrate de ajustar la ruta de requerimiento según la ubicación de tu script test.php
 require_once '../core/Database.php';
 
-// Obtiene la instancia de PDO desde la clase Database Singleton
+
 $pdo = Database::getInstance()->getConnection();
 
 $query = "SELECT * FROM Provincia";
